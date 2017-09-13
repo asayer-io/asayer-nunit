@@ -12,7 +12,7 @@ namespace asayer_nunit
     {
 
         [Test]
-        public void SearchGoogle()
+        public void ProductFeatures()
         {
             driver.Navigate().GoToUrl("http://www.asayer.io");
             System.Threading.Thread.Sleep(5000);
