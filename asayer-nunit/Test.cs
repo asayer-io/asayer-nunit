@@ -15,13 +15,11 @@ namespace asayer_nunit
         public void ProductFeatures()
         {
             driver.Navigate().GoToUrl("http://www.asayer.io");
-            System.Threading.Thread.Sleep(5000);
-            IWebElement videoButton = driver.FindElement(By.Id("wistia_14.thumb_container"));
-            System.Threading.Thread.Sleep(5000);
-            videoButton.Click();
-            System.Threading.Thread.Sleep(5000);
-            IWebElement video = driver.FindElement(By.Id("wistia_simple_video_34"));
-            Assert.IsTrue(video.Displayed);
+            System.Threading.Thread.Sleep(2000);
+            IWebElement productButton = driver.FindElement(By.CssSelector("a[href='product.html']"));
+            System.Threading.Thread.Sleep(2000);
+            productButton.Click();
+            System.Threading.Thread.Sleep(2000);
             Assert.AreEqual("QA-as-a-Service | Asayer", driver.Title);
         }
     }
