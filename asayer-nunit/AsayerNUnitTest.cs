@@ -5,6 +5,10 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
 using System.Collections.Specialized;
 using System.Configuration;
+using System.Net;
+using System.IO;
+using System.Text;
+using NUnit.Framework.Interfaces;
 
 namespace asayer_nunit
 {
@@ -67,7 +71,45 @@ namespace asayer_nunit
         public void Cleanup()
         {
             driver.Quit();
+            if (NUnit.Framework.TestContext.CurrentContext.Result.Outcome.Status == TestStatus.Passed)
+            {
+                this.markTest("Passed");
+            }
+            else
+            {
+                this.markTest("Failed");
+            }
 
+        }
+        public void markTest(string state)
+        {
+            Console.WriteLine("sessionId: " + this.sessionId);
+            if (this.sessionId != null && this.sessionId.Length > 0)
+            {
+                try
+                {
+                    string reqString = "{\"sessionID\":\"" + this.sessionId + "\", \"sessionStatus\":\"" + state + "\",\"apiKey\":\"" + this.apikey + "\"}";
+                    byte[] requestData = Encoding.UTF8.GetBytes(reqString);
+                    Uri myUri = new Uri(string.Format("https://dashboard.asayer.io/sessions/mark_test"));
+                    WebRequest myWebRequest = HttpWebRequest.Create(myUri);
+                    HttpWebRequest myHttpWebRequest = (HttpWebRequest)myWebRequest;
+                    myWebRequest.ContentType = "application/json";
+                    myWebRequest.Method = "POST";
+                    myWebRequest.ContentLength = requestData.Length;
+                    using (Stream st = myWebRequest.GetRequestStream()) st.Write(requestData, 0, requestData.Length);
+
+                    myWebRequest.GetResponse().Close();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("{0} Exception caught.", e);
+                    Console.WriteLine("Asayer: Something went wrong in marking the session state.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Asayer: You have to initiate the AsayerDriver first in order to call markTestState.");
+            }
         }
     }
 }
