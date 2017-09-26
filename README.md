@@ -128,7 +128,7 @@ The list of your active tunnels is available in *Settings > Tunnels*. For more i
 </p>
 
 ## Application Parameters
-You can change the app settings from the [`App.config`](https://github.com/asayer-io/asayer-specflow/blob/master/asayer-specflow/App.config) file under `<appSettings>`.
+You can change the app settings from the [`App.config`](https://github.com/asayer-io/asayer-nunit/blob/master/asayer-nunit/App.config) file under `<appSettings>`.
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <configuration>
@@ -154,7 +154,7 @@ Belows are the supported settings:
 | `tunnelId` | | The tunnel's ID for local tests | yes for ([local testing](#local-testing)) | 
 
 ## Capabilities
-You can change the caps from the [`App.config`](https://github.com/asayer-io/asayer-specflow/blob/master/asayer-specflow/App.config) file under `<capabilities><settings>`.
+You can change the caps from the [`App.config`](https://github.com/asayer-io/asayer-nunit/blob/master/asayer-nunit/App.config) file under `<capabilities><settings>`.
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
