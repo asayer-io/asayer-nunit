@@ -116,7 +116,7 @@ Clicking on the *Download Assets* button will download a zip file enclosing:
 
 <p align="center">
 <kbd>
-<img src="https://s3.eu-central-1.amazonaws.com/asayer-samples-assets/specflow/download+assets+2.png"/>
+<img src="https://s3.eu-central-1.amazonaws.com/asayer-samples-assets/nunit/download+assets+2.png"/>
 </kbd>
 </p>
 
