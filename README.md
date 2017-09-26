@@ -136,7 +136,7 @@ You can change the app settings from the [`App.config`](https://github.com/asaye
   <appSettings>    
     <add key="apikey" value="YOUR ASAYER API KEY" />
     <add key="server" value="https://hub.asayer.io/wd/hub" />
-    <add key="name" value="Testing SpecFlow with Asayer" />
+    <add key="name" value="Testing NUnit with Asayer" />
     ...
   </appSettings>
   ...
@@ -223,52 +223,29 @@ These flags will be interpreted as `--incognito --start-fullscreen` (note that `
     
 ## Integrating Asayer with your existing project
 Follow the below steps to integrate Asayer with your existing project:
-* Copy the 2 classes [`AsayerDriver.cs`](https://github.com/asayer-io/asayer-specflow/blob/master/asayer-specflow/AsayerDriver.cs) & [`Asayer.cs`](https://github.com/asayer-io/asayer-specflow/blob/master/asayer-specflow/Asayer.cs) to your project
+* Copy the classe [`AsayerNUnitTest.cs`](https://github.com/asayer-io/asayer-nunit/blob/master/asayer-nunit/AsayerNUnitTest.cs) to your project
 * Have the required [NuGet dependencies](#dependencies) installed
-* Copy or merge the [`App.config`](https://github.com/asayer-io/asayer-specflow/blob/master/asayer-specflow/App.config) file to/with your project
-* In the test steps definition class (see [example](#example) below): 
-    - Add the attribute [`readonly AsayerDriver _asayerDriver;`](https://github.com/asayer-io/asayer-specflow/blob/92fd3c4846b592c958e60e173ed896b3550188cc/asayer-specflow/Features/Steps/AsayerFeatureSteps.cs#L11)
-    - Add the following code snippet to the [constructor](https://github.com/asayer-io/asayer-specflow/blob/8b1635a7ade7a760c73cd88e7a431c143bfa9679/asayer-specflow/Features/Steps/TestSteps.cs#L14)
-	```cs 
-	_asayerDriver = (AsayerDriver)ScenarioContext.Current["asayerDriver"];
-	driver = _asayerDriver.Init(); //Make sure that this line replaces the WebDriver instance
-	```
+* Copy or merge the [`App.config`](https://github.com/asayer-io/asayer-nunit/blob/master/asayer-nunit/App.config) file to/with your project
+* In the test definition class (see [example](#example) below), extend the `AsayerNUnitTest` class, this will provide you with a `driver` attribute
 	
 ### Example
-Excerpt from [TestSteps.cs](https://github.com/asayer-io/asayer-specflow/blob/master/asayer-specflow/Features/Steps/TestSteps.cs):
+Excerpt from [Test.cs](https://github.com/asayer-io/asayer-nunit/blob/master/asayer-nunit/Test.cs):
 ```cs
 using ...
-namespace asayer_specflow.Features.Steps
+namespace asayer_nunit
 {
-    [Binding]
-    public class TestSteps
+    class Test : AsayerNUnitTest
     {
-        public IWebDriver driver;
-        readonly AsayerDriver _asayerDriver;
-
-        public TestSteps()
-        {
-            _asayerDriver = (AsayerDriver)ScenarioContext.Current["asayerDriver"];
-            driver = _asayerDriver.Init();
-        }
-
-         [Given(@"I am on the Asayer")]
-        public void GivenIAmOnTheAsayer()
+        [Test]
+        public void ProductFeatures()
         {
             driver.Navigate().GoToUrl("http://www.asayer.io");
+            ...
         }
-
-        [When(@"I open the products page")]
-        public void WhenIOpenTheProductsPage()
-        {...}
-
-        [Then(@"I should see the product details page")]
-        public void ThenIShouldSeeTheProductDetailsPage()
-        {...}
     }
 }
 ```
-Note how `WebDriver` was replaced with the `IWebDriver` created by the `AsayerDriver` class.
+Note how `WebDriver` was replaced with the `IWebDriver` created by the `AsayerNUnitTest` superclass.
 
 ## Local Testing
 Local testing allows you to test your internal servers, in addition to public URLs, using Asayer's infrastucture without having to update your firewalls or proxies.
@@ -303,7 +280,7 @@ Help Options:
 Note that only `-k` and `-i` parameters are required.
 
 ### Setting up the tests for Local Testing
-To set up your tests for local testing, you must add the `tunnelId` capability to the [`App.config`](https://github.com/asayer-io/asayer-specflow/blob/master/asayer-specflow/App.config) file under `<appSettings>` section 
+To set up your tests for local testing, you must add the `tunnelId` capability to the [`App.config`](https://github.com/asayer-io/asayer-nunit/blob/master/asayer-nunit/App.config) file under `<appSettings>` section 
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -321,7 +298,7 @@ Once done, build then run your tests as [usual](#run-it). HTTP traffic will then
 Details about the local tests can be found in the [Dashboard](#dashboard). Local tests are marked with a *plug* icon.
 
 <p align="center">
-<img src="https://s3.eu-central-1.amazonaws.com/asayer-samples-assets/specflow/local1.PNG"/>
+<img src="https://s3.eu-central-1.amazonaws.com/asayer-samples-assets/nunit/local1.PNG"/>
 </p>
 
 ### Limitations
@@ -329,7 +306,7 @@ Details about the local tests can be found in the [Dashboard](#dashboard). Local
 * Only 3 active tunnels are allowed per organization
 
 ## Mark a completed Test
-Once the session is completed, you can mark the test (either passed or failed) by calling the `markTest(["Passed"|"Failed"])` method of the `AsayerDriver` class. 
+Once the session is completed, you can mark the test (either passed or failed) by calling the `markTest(["Passed"|"Failed"])` method of the `AsayerNUnitTest` superclass. 
 
 You can also rely on our REST API to do so by submitting `sessionID` and `sessionStatus` parameters:
 
@@ -352,38 +329,29 @@ Json: {
 The state will be visible in the Dashboard as below.
 
 <p align="center">
-<img src="https://s3.eu-central-1.amazonaws.com/asayer-samples-assets/specflow/test+state+2.PNG"/>
+<img src="https://s3.eu-central-1.amazonaws.com/asayer-samples-assets/nunit/test+state+2.PNG"/>
 </p>
 
 ## Dependencies
 This project relies on the below dependencies:
-- SpecFlow
 - Selenium.WebDriver
 - NUnit
 - NUnit3TestAdapter
-- Newtonsoft.Json
 - Blun.ConfigurationManager
-- Microsoft HTTP Client Libraries
 
 To install the latest version of these dependencies, go to *Tools > NuGet Package Manager > Manage NuGet Packages For Solution...* then search/install each one of them.
 
 **Or** add the missing line to your `packages.config` file:
 ```xml
   <package id="Blun.ConfigurationManager" version="1.0.5686.2674" targetFramework="net45" />
-  <package id="Microsoft.Bcl" version="1.1.10" targetFramework="net45" />
-  <package id="Microsoft.Bcl.Build" version="1.0.21" targetFramework="net45" />
-  <package id="Microsoft.Net.Http" version="2.2.29" targetFramework="net45" />
-  <package id="Newtonsoft.Json" version="10.0.3" targetFramework="net45" />
   <package id="NUnit" version="3.7.1" targetFramework="net45" />
   <package id="NUnit3TestAdapter" version="3.8.0" targetFramework="net45" />
-  <package id="Selenium.Chrome.WebDriver" version="2.30" targetFramework="net45" />
-  <package id="Selenium.WebDriver" version="3.5.1" targetFramework="net45" />
-  <package id="SpecFlow" version="2.2.0" targetFramework="net45" />
+  <package id="Selenium.WebDriver" version="3.5.0" targetFramework="net45" />
 ```
 ## Troubleshooting
-* If you can't build the project, or the Test Explorer doesn't show the list of available tests, please make sure you have the [SpecFlow-IDE-Integration for Visual Studio](https://specflow.org/documentation/Install-IDE-Integration/)
+* 
 
 ## Important Notes
-- Do not remove the `[AfterScenario]` from the `Asayer` class as it closes your session at the end of every test (otherwise it will timeout)
+- Do not remove the `[TearDown]` from the `AsayerNUnitTest` class as it closes your session at the end of every test (otherwise it will timeout)
 
 ## [NUnit Documentation](http://docs.asayer.io/docs/nunit.html)
