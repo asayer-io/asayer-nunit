@@ -20,6 +20,7 @@
    - [Tunnels](#tunnels)
 * [Application Parameters](#application-parameters)
 * [Capabilities](#capabilities)
+   - [Supported Mobile Devices](#supported-mobile-devices)
    - [Fun with Flags](#fun-with-flags)
 * [Integrating Asayer with your existing project](#integrating-asayer-with-your-existing-project)
    - [Example](#example)
@@ -172,7 +173,7 @@ Below is the list of supported capabilities:
 
 | Name        | Possible Values           | Default Value  |Description  | Required  |
 | :-------------: |:-------------| :-----:|:-------------|:-----:|
-| `platform`| `linux` `windows` `mac` `android` `ios` `any` | linux | The OS used for the test | yes |
+| `platform`| `linux` `windows` `mac` `android` `ios` `any`| linux | The platform used for the test | yes |
 | `browserName`|`chrome` `firefox` `ie` `safari` `opera` `edge`| chrome | The browser used for the test | yes |
 | `flags`|| - |A list of flags to be passed to the browser, see [Fun with Flags](#fun-with-flags) | no |
 | `deviceName`| see the list of [supported mobile devices](#supported-mobile-devices) | - |The android device name to use for the test | yes if `platform` is set to `android` or `ios` |
@@ -188,16 +189,16 @@ The supported browser versions are:
 | ie | 11 |
 | safari | 10 |
 
-
 ### Supported Mobile Devices
-The list of supported mobile devices for each os are:
+
+The list of available mobile simulators/emulators is as below:
 
 | platform | deviceName|
 | :-------------: |:-------------| 
 | `android` | `Galaxy_S8`, `LG_G6`, `Pixel`, `Pixel_XL`, `Pixel_C`, `Nexus_5X`, `Nexus_6P` `Nexus_9` |
 | `ios` | `iPhone 5`, `iPhone 5s`, `iPhone 6`, `iPhone 6 Plus`, `iPhone 6s`, `iPhone 6s Plus`, `iPhone 7`, `iPhone 7 Plus`, `iPhone SE`, `iPad Air`, `iPad Air 2`, `iPad Pro` |
 
-Note: Only `Android 7.1.1` and `iOS 10.3` are supported
+Note: Only `Android 7.1.1` and `iOS 10.3` are supported.
 
 
 ### Fun with Flags
