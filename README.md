@@ -35,15 +35,10 @@
 
 ## Prerequisites
 * Microsoft Visual Studio 2012 or higher (you can download the [Community Edition](https://www.visualstudio.com/en-us/downloads/download-visual-studio-vs.aspx) for free)
-* SpecFlow Visual Studio integration. Follow the steps below to install it:
-    * Go to *Tools > Extension and Updates...*
-    * Select the *Online* branch from the left side of the window and search for `SpecFlow`
-    * Select *SpecFlow for Visual Studio...* then click on download
-    * Restart Visual Studio
     
 ## Set it up
-* Clone the repo `git clone https://github.com/asayer-io/asayer-specflow` or [download it](https://github.com/asayer-io/asayer-specflow/archive/master.zip)
-* Open the solution `asayer-specflow/asayer-specflow.sln` in *Visual Studio*
+* Clone the repo `git clone https://github.com/asayer-io/asayer-nunit` or [download it](https://github.com/asayer-io/asayer-nunit/archive/master.zip)
+* Open the solution `asayer-nunit/asayer-nunit.sln` in *Visual Studio*
 * Build it (*Build > Build Solution*, which will automatically install the required NuGet packages)
 * Update the `App.config` file with your Asayer [API key](https://dashboard.asayer.io/settings?f=3)
 
@@ -67,14 +62,14 @@ Details about the test session can be found in the [Dashboard](https://dashboard
 This is where all your executed tests are listed. You can use the filter to navigate through *Passed* or *Failed* tests (see [Mark A Completed Test](#mark-a-completed-test) to learn how to mark a test).
 
 <p align="center">
-<img src="https://s3.eu-central-1.amazonaws.com/asayer-samples-assets/specflow/tests-list2.PNG"/>
+<img src="https://s3.eu-central-1.amazonaws.com/asayer-samples-assets/nunit/tests-list2.PNG"/>
 </p>
 
 ### Test Overview
 Encloses various details like *State*, *Duration*, *Execution Time*, *Platform*/*Browser* as well as the *User* who initiated the test.
 
 <p align="center">
-<img src="https://s3.eu-central-1.amazonaws.com/asayer-samples-assets/specflow/test+overview2.PNG"/>
+<img src="https://s3.eu-central-1.amazonaws.com/asayer-samples-assets/nunit/test+overview2.PNG"/>
 </p>
 
 ### Session Recording
