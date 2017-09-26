@@ -314,9 +314,9 @@ You can also rely on our REST API to do so by submitting `sessionID` and `sessio
 Endpoint: https://dashboard.asayer.io/sessions/mark_test
 Method: POST
 Json: {
-        sessionID:AsayerDriver.getSessionId(), // Required
+        sessionID:this.sessionId, // Required
         sessionStatus:"Passed"|"Failed", // Required
-        apiKey:"YOUR ASAYER API KEY", // Required
+        apiKey:"YOUR ASAYER API KEY (this.apikey)", // Required
         reqID: "REQUIREMENT ID", // Optional
 	testStatus: { // Optional
     		"TEST ID 1": "Passed"|"Failed",
