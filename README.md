@@ -1,5 +1,5 @@
 [<img src="https://dashboard.asayer.io/assets/logo-507f1d735124eb7b629733a52415bd374776bf107c05352184bbb39d8e3f26f5.png" width="235"/>](https://asayer.io)
-[<img src="https://s3.eu-central-1.amazonaws.com/asayer-samples-assets/nunit/nunit_logo.png"/>](http://nunit.org/)
+[<img src="https://s3.eu-central-1.amazonaws.com/asayer-samples-assets/nunit/nunit_logo.png" width="162" />](http://nunit.org/)
 
 # Asayer - NUnit (C#)
 [NUnit (C#)](http://nunit.org/) integration with [Asayer](https://asayer.io).
@@ -29,9 +29,7 @@
    - [Limitations](#limitations)
 * [Mark a completed Test](#mark-a-completed-test)
 * [Dependencies](#dependencies)
-* [Troubleshooting](#troubleshooting)
 * [Important Notes](#important-notes)
-* [NUnit Documentation](#nunit-documentation)
 
 ## Prerequisites
 * Microsoft Visual Studio 2012 or higher (you can download the [Community Edition](https://www.visualstudio.com/en-us/downloads/download-visual-studio-vs.aspx) for free)
@@ -42,7 +40,6 @@
 * Build it (*Build > Build Solution*, which will automatically install the required NuGet packages)
 * Update the `App.config` file with your Asayer [API key](https://dashboard.asayer.io/settings?f=3)
 
-See [troubleshooting](#troubleshooting) if you are unable to open or build the solution.
 
 ## Run it
 To run the test, proceed as follows:
@@ -175,11 +172,12 @@ Below is the list of supported capabilities:
 
 | Name        | Possible Values           | Default Value  |Description  | Required  |
 | :-------------: |:-------------| :-----:|:-------------|:-----:|
-| `platform`| `linux` `windows` `mac` | linux | The OS used for the test | yes |
+| `platform`| `linux` `windows` `mac` `android` `ios` `any` | linux | The OS used for the test | yes |
 | `browserName`|`chrome` `firefox` `ie` `safari` `opera` `edge`| chrome | The browser used for the test | yes |
 | `flags`|| - |A list of flags to be passed to the browser, see [Fun with Flags](#fun-with-flags) | no |
+| `deviceName`| see the list of [supported mobile devices](#supported-mobile-devices) | - |The android device name to use for the test | yes if `platform` is set to `android` or `ios` |
 
-The supported versions are:
+The supported browser versions are:
 
 | Name        | Version           |
 | :-------------: |:-------------:| 
@@ -189,6 +187,18 @@ The supported versions are:
 | chrome | 61 |
 | ie | 11 |
 | safari | 10 |
+
+
+### Supported Mobile Devices
+The list of supported mobile devices for each os are:
+
+| platform | deviceName|
+| :-------------: |:-------------| 
+| `android` | `Galaxy_S8`, `LG_G6`, `Pixel`, `Pixel_XL`, `Pixel_C`, `Nexus_5X`, `Nexus_6P` `Nexus_9` |
+| `ios` | `iPhone 5`, `iPhone 5s`, `iPhone 6`, `iPhone 6 Plus`, `iPhone 6s`, `iPhone 6s Plus`, `iPhone 7`, `iPhone 7 Plus`, `iPhone SE`, `iPad Air`, `iPad Air 2`, `iPad Pro` |
+
+Note: Only `Android 7.1.1` and `iOS 10.3` are supported
+
 
 ### Fun with Flags
 
@@ -348,10 +358,6 @@ To install the latest version of these dependencies, go to *Tools > NuGet Packag
   <package id="NUnit3TestAdapter" version="3.8.0" targetFramework="net45" />
   <package id="Selenium.WebDriver" version="3.5.0" targetFramework="net45" />
 ```
-## Troubleshooting
-* 
 
 ## Important Notes
 - Do not remove the `[TearDown]` from the `AsayerNUnitTest` class as it closes your session at the end of every test (otherwise it will timeout)
-
-## [NUnit Documentation](http://docs.asayer.io/docs/nunit.html)
