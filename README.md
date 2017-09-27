@@ -46,7 +46,7 @@
 To run the test, proceed as follows:
 * Build the project (*Build > Build Solution*)
 * Open the Test Explorer window (*Test > Windows > Test Explorer*)
-* Right click on the `ProductFeatures` test and choose *Run Selected Tests*
+* Right click on the `CheckProductPage` test and choose *Run Selected Tests*
 * Go to https://dashboard.asayer.io/automate/sessions and see what happened.
 
 <p align="center">
@@ -237,7 +237,7 @@ Follow the below steps to integrate Asayer with your existing project:
 * Copy the classe [`AsayerWebDriver.cs`](https://github.com/asayer-io/asayer-nunit/blob/master/asayer-nunit/AsayerWebDriver.cs) to your project
 * Have the required [NuGet dependencies](#dependencies) installed
 * Copy or merge the [`App.config`](https://github.com/asayer-io/asayer-nunit/blob/master/asayer-nunit/App.config) file to/with your project
-* In the test definition class (see [example](#example) below), extend the `AsayerNUnitTest` class, this will provide you with a `driver` attribute
+* In the test definition class (see [example](#example) below), extend the `AsayerWebDriver` class, this will provide you with a `driver` attribute
 	
 ### Example
 Excerpt from [MyTest.cs](https://github.com/asayer-io/asayer-nunit/blob/master/asayer-nunit/MyTest.cs):
@@ -256,7 +256,7 @@ namespace asayer_nunit
     }
 }
 ```
-Note how `WebDriver` was replaced with the `IWebDriver` created by the `AsayerNUnitTest` superclass.
+Note how `WebDriver` was replaced with the `IWebDriver` created by the `AsayerWebDriver` superclass.
 
 ## Local Testing
 Local testing allows you to test your internal servers, in addition to public URLs, using Asayer's infrastucture without having to update your firewalls or proxies.
@@ -317,7 +317,7 @@ Details about the local tests can be found in the [Dashboard](#dashboard). Local
 * Only 3 active tunnels are allowed per organization
 
 ## Mark a completed Test
-Once the session is completed, you can mark the test (either passed or failed) by calling the `markTest(["Passed"|"Failed"])` method of the `AsayerNUnitTest` superclass. 
+Once the session is completed, you can mark the test (either passed or failed) by calling the `markTest(["Passed"|"Failed"])` method of the `AsayerWebDriver` superclass. 
 
 You can also rely on our REST API to do so by submitting `sessionID` and `sessionStatus` parameters:
 
@@ -361,4 +361,4 @@ To install the latest version of these dependencies, go to *Tools > NuGet Packag
 ```
 
 ## Important Notes
-- Do not remove the `[TearDown]` from the `AsayerNUnitTest` class as it closes your session at the end of every test (otherwise it will timeout)
+- Do not remove the `[TearDown]` from the `AsayerWebDriver` class as it closes your session at the end of every test (otherwise it will timeout)
