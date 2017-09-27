@@ -56,9 +56,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AsayerNUnitTest.cs" />
+    <Compile Include="AsayerWebDriver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Test.cs" />
+    <Compile Include="MyTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

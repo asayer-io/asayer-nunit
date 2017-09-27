@@ -8,11 +8,11 @@ using OpenQA.Selenium;
 
 namespace asayer_nunit
 {
-    class Test : AsayerNUnitTest
+    class MyTest : AsayerWebDriver
     {
 
         [Test]
-        public void ProductFeatures()
+        public void CheckProductPage()
         {
             driver.Navigate().GoToUrl("http://www.asayer.io");
             System.Threading.Thread.Sleep(2000);

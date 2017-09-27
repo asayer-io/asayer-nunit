@@ -12,13 +12,13 @@ using NUnit.Framework.Interfaces;
 
 namespace asayer_nunit
 {
-    class AsayerNUnitTest
+    class AsayerWebDriver
     {
         protected IWebDriver driver;
         protected string sessionId { get; set; }
         protected string apikey;
 
-        public AsayerNUnitTest()
+        public AsayerWebDriver()
         { }
 
         [SetUp]
