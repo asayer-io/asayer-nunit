@@ -234,21 +234,21 @@ These flags will be interpreted as `--incognito --start-fullscreen` (note that `
     
 ## Integrating Asayer with your existing project
 Follow the below steps to integrate Asayer with your existing project:
-* Copy the classe [`AsayerNUnitTest.cs`](https://github.com/asayer-io/asayer-nunit/blob/master/asayer-nunit/AsayerNUnitTest.cs) to your project
+* Copy the classe [`AsayerWebDriver.cs`](https://github.com/asayer-io/asayer-nunit/blob/master/asayer-nunit/AsayerWebDriver.cs) to your project
 * Have the required [NuGet dependencies](#dependencies) installed
 * Copy or merge the [`App.config`](https://github.com/asayer-io/asayer-nunit/blob/master/asayer-nunit/App.config) file to/with your project
 * In the test definition class (see [example](#example) below), extend the `AsayerNUnitTest` class, this will provide you with a `driver` attribute
 	
 ### Example
-Excerpt from [Test.cs](https://github.com/asayer-io/asayer-nunit/blob/master/asayer-nunit/Test.cs):
+Excerpt from [MyTest.cs](https://github.com/asayer-io/asayer-nunit/blob/master/asayer-nunit/MyTest.cs):
 ```cs
 using ...
 namespace asayer_nunit
 {
-    class Test : AsayerNUnitTest
+    class MyTest : AsayerWebDriver
     {
         [Test]
-        public void ProductFeatures()
+        public void CheckProductPage()
         {
             driver.Navigate().GoToUrl("http://www.asayer.io");
             ...
