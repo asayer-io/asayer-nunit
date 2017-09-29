@@ -187,7 +187,7 @@ The supported browser versions are:
 | firefox | 55 |
 | chrome | 61 |
 | ie | 11 |
-| safari | 10 |
+| safari | 11.0 |
 
 ### Supported Mobile Devices
 
