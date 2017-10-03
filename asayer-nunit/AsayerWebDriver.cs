@@ -63,7 +63,6 @@ namespace asayer_nunit
                 if (flagsList.Count > 0) { capability.SetCapability("flags", flagsList); }
             }
             var timeOut = TimeSpan.FromMinutes(1);
-            //return;
             this.driver = new RemoteWebDriver(new Uri(hub), capability, timeOut);
             this.sessionId = ((RemoteWebDriver)driver).SessionId.ToString();
         }
@@ -74,19 +73,19 @@ namespace asayer_nunit
             List<AsayerTestStatus> testStatus = new List<AsayerTestStatus>();
             testStatus.Add(new AsayerTestStatus("TEST ID 1", "Passed"));
             testStatus.Add(new AsayerTestStatus("TEST ID 2", "Failed"));
-            this.markTest("Passed", "requirementId1230", testStatus);
+            this.markSession("Passed", "requirementId1230", testStatus);
             driver.Quit();
             if (NUnit.Framework.TestContext.CurrentContext.Result.Outcome.Status == TestStatus.Passed)
             {
-                this.markTest("Passed");
+                this.markSession("Passed");
             }
             else
             {
-                this.markTest("Failed");
+                this.markSession("Failed");
             }
 
         }
-        public void markTest(string state)
+        public void markSession(string state)
         {
             Console.WriteLine("sessionId: " + this.sessionId);
             if (this.sessionId != null && this.sessionId.Length > 0)
@@ -99,7 +98,7 @@ namespace asayer_nunit
                 Console.WriteLine("Asayer: You have to initiate the AsayerWebDriver first in order to call markTestState.");
             }
         }
-        public void markTest(string state, string requirementID, List<AsayerTestStatus> testStatus)
+        public void markSession(string state, string requirementID, List<AsayerTestStatus> testStatus)
         {
             if (this.sessionId != null && this.sessionId.Length > 0)
             {
@@ -123,7 +122,7 @@ namespace asayer_nunit
             try
             {
                 byte[] requestData = Encoding.UTF8.GetBytes(json);
-                Uri myUri = new Uri(string.Format("https://dashboard.asayer.io/sessions/mark_test"));
+                Uri myUri = new Uri(string.Format("https://dashboard.asayer.io/mark_session"));
                 WebRequest myWebRequest = HttpWebRequest.Create(myUri);
                 HttpWebRequest myHttpWebRequest = (HttpWebRequest)myWebRequest;
                 myWebRequest.ContentType = "application/json";
