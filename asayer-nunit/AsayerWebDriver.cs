@@ -91,25 +91,8 @@ namespace asayer_nunit
             Console.WriteLine("sessionId: " + this.sessionId);
             if (this.sessionId != null && this.sessionId.Length > 0)
             {
-                try
-                {
-                    AsayerTestResult atr = new AsayerTestResult(this.sessionId, state, this.apikey);
-                    byte[] requestData = Encoding.UTF8.GetBytes(atr.getJsonString());
-                    Uri myUri = new Uri(string.Format("https://dashboard.asayer.io/sessions/mark_test"));
-                    WebRequest myWebRequest = HttpWebRequest.Create(myUri);
-                    HttpWebRequest myHttpWebRequest = (HttpWebRequest)myWebRequest;
-                    myWebRequest.ContentType = "application/json";
-                    myWebRequest.Method = "POST";
-                    myWebRequest.ContentLength = requestData.Length;
-                    using (Stream st = myWebRequest.GetRequestStream()) st.Write(requestData, 0, requestData.Length);
-
-                    myWebRequest.GetResponse().Close();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("{0} Exception caught.", e);
-                    Console.WriteLine("Asayer: Something went wrong in marking the session state.");
-                }
+                AsayerTestResult atr = new AsayerTestResult(this.sessionId, state, this.apikey);
+                this.sendResults(atr.getJsonString());
             }
             else
             {
@@ -122,25 +105,8 @@ namespace asayer_nunit
             {
                 if (requirementID != null && requirementID.Length > 0 && testStatus.Count > 0)
                 {
-                    try
-                    {
-                        AsayerTestResult atr = new AsayerTestResult(this.sessionId, state, this.apikey, requirementID, testStatus);
-                        byte[] requestData = Encoding.UTF8.GetBytes(atr.getJsonString());
-                        Uri myUri = new Uri(string.Format("https://dashboard.asayer.io/sessions/mark_test"));
-                        WebRequest myWebRequest = HttpWebRequest.Create(myUri);
-                        HttpWebRequest myHttpWebRequest = (HttpWebRequest)myWebRequest;
-                        myWebRequest.ContentType = "application/json";
-                        myWebRequest.Method = "POST";
-                        myWebRequest.ContentLength = requestData.Length;
-                        using (Stream st = myWebRequest.GetRequestStream()) st.Write(requestData, 0, requestData.Length);
-
-                        myWebRequest.GetResponse().Close();
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine("{0} Exception caught.", e);
-                        Console.WriteLine("Asayer: Something went wrong in marking the session state.");
-                    }
+                    AsayerTestResult atr = new AsayerTestResult(this.sessionId, state, this.apikey, requirementID, testStatus);
+                    this.sendResults(atr.getJsonString());
                 }
                 else
                 {
@@ -152,7 +118,27 @@ namespace asayer_nunit
                 Console.WriteLine("Asayer: You have to initiate the AsayerWebDriver first in order to call markTestState.");
             }
         }
+        private void sendResults(string json)
+        {
+            try
+            {
+                byte[] requestData = Encoding.UTF8.GetBytes(json);
+                Uri myUri = new Uri(string.Format("https://dashboard.asayer.io/sessions/mark_test"));
+                WebRequest myWebRequest = HttpWebRequest.Create(myUri);
+                HttpWebRequest myHttpWebRequest = (HttpWebRequest)myWebRequest;
+                myWebRequest.ContentType = "application/json";
+                myWebRequest.Method = "POST";
+                myWebRequest.ContentLength = requestData.Length;
+                using (Stream st = myWebRequest.GetRequestStream()) st.Write(requestData, 0, requestData.Length);
 
+                myWebRequest.GetResponse().Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("{0} Exception caught.", e);
+                Console.WriteLine("Asayer: Something went wrong in marking the session state.");
+            }
+        }
     }
     class AsayerTestResult
     {
