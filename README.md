@@ -331,14 +331,15 @@ Json: {
     }
 ```
 
-The state will be visible in the Dashboard as below.
+The state will be visible in the Dashboard:
 
 <p align="center">
 <img src="https://s3.eu-central-1.amazonaws.com/asayer-samples-assets/nunit/test+state+2.PNG"/>
 </p>
 
 For reporting purposes, you can call the `markSession(string state, string requirementID, List<AsayerTestStatus> testStatus)` method of the `AsayerWebDriver` superclass. 
-`markSession`'s parameters:
+
+`markSession`'s parameters are:
 
 - `state`: the session's state
 - `requirementID`: the session's requirement ID
@@ -354,7 +355,7 @@ See the example below:
     this.markSession("Passed", "requirementId1230", testStatus);
 ```
 
-You can also rely on our REST API to do so by calling:
+You can also rely on our REST API by calling:
 
 ```
 Endpoint: https://dashboard.asayer.io/mark_session
@@ -368,21 +369,17 @@ Json: {
     		{
     		    name: "TEST ID 1", 
     		    result: "Passed"|"Failed"
-		    },
+		},
     		{
     		    name: "TEST ID 2", 
     		    result: ""Passed"|"Failed"
-		    },
+		},
     		...
     	]
     }
 ```
 
-The state will be visible in the Dashboard and in the Reporting section as below.
-
-<p align="center">
-<img src="https://s3.eu-central-1.amazonaws.com/asayer-samples-assets/nunit/test+state+2.PNG"/>
-</p>
+All of these details can be seen in the Reporting section:
 
 <p align="center">
 <img src="https://s3.eu-central-1.amazonaws.com/asayer-samples-assets/nunit/reporting.PNG"/>
