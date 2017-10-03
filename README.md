@@ -321,7 +321,7 @@ Once the session is completed, you can mark the test (either passed or failed) b
 
 You can also rely on our REST API to do so by submitting `sessionID` and `sessionStatus` parameters:
 
-```json
+```
 Endpoint: https://dashboard.asayer.io/mark_session
 Method: POST
 Json: {
@@ -356,7 +356,7 @@ See the example below:
 
 You can also rely on our REST API to do so by calling:
 
-```json
+```
 Endpoint: https://dashboard.asayer.io/mark_session
 Method: POST
 Json: {
