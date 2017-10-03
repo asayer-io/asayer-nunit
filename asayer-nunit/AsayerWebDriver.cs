@@ -138,7 +138,7 @@ namespace asayer_nunit
     class AsayerTestResult
     {
         public string sessionID { get; set; }
-        public string sessionStatus { get; set; }//"Passed"|"Failed"
+        public string sessionStatus { get; set; }
         public string apiKey { get; set; }
         public string reqID { get; set; }
         public List<AsayerTestStatus> testStatus;
