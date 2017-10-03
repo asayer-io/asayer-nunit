@@ -28,7 +28,7 @@
    - [Starting the Tunnel](#starting-the-tunnel)
    - [Setting up the tests for Local Testing](#setting-up-the-tests-for-local-testing)
    - [Limitations](#limitations)
-* [Mark a completed Test](#mark-a-completed-test)
+* [Mark Session](#mark-session)
 * [Dependencies](#dependencies)
 * [Important Notes](#important-notes)
 
@@ -57,7 +57,7 @@ To run the test, proceed as follows:
 Details about the test session can be found in the [Dashboard](https://dashboard.asayer.io/automate/sessions) under *Automate > Sessions*.
 
 ### Test List
-This is where all your executed tests are listed. You can use the filter to navigate through *Passed* or *Failed* tests (see [Mark A Completed Test](#mark-a-completed-test) to learn how to mark a test).
+This is where all your executed tests are listed. You can use the filter to navigate through *Passed* or *Failed* tests (see [Mark Session](#mark-session) to learn how to mark a test).
 
 <p align="center">
 <img src="https://s3.eu-central-1.amazonaws.com/asayer-samples-assets/nunit/tests-list2.PNG"/>
@@ -316,24 +316,18 @@ Details about the local tests can be found in the [Dashboard](#dashboard). Local
 * Local Testing is available on `chrome`, `firefox` and `opera` browsers only
 * Only 3 active tunnels are allowed per organization
 
-## Mark a completed Test
-Once the session is completed, you can mark the test (either passed or failed) by calling the `markTest(["Passed"|"Failed"])` method of the `AsayerWebDriver` superclass. 
+## Mark Session
+Once the session is completed, you can mark the test (either passed or failed) by calling the `markSession(["Passed"|"Failed"])` method of the `AsayerWebDriver` superclass. 
 
 You can also rely on our REST API to do so by submitting `sessionID` and `sessionStatus` parameters:
 
-```
-Endpoint: https://dashboard.asayer.io/sessions/mark_test
+```json
+Endpoint: https://dashboard.asayer.io/mark_session
 Method: POST
 Json: {
         sessionID:this.sessionId, // Required
         sessionStatus:"Passed"|"Failed", // Required
         apiKey:"YOUR ASAYER API KEY (this.apikey)", // Required
-        reqID: "REQUIREMENT ID", // Optional
-	testStatus: { // Optional
-    		"TEST ID 1": "Passed"|"Failed",
-    		"TEST ID 2": "Passed"|"Failed",
-    		...
-    	}
     }
 ```
 
@@ -343,12 +337,65 @@ The state will be visible in the Dashboard as below.
 <img src="https://s3.eu-central-1.amazonaws.com/asayer-samples-assets/nunit/test+state+2.PNG"/>
 </p>
 
+For reporting purposes, you can call the `markSession(string state, string requirementID, List<AsayerTestStatus> testStatus)` method of the `AsayerWebDriver` superclass. 
+`markSession`'s parameters:
+
+- `state`: the session's state
+- `requirementID`: the session's requirement ID
+- `testStatus`: a List of `AsayerTestStatus`
+-- `AsayerTestStatus` is an object that contains the `testId`, `testStatus`  
+
+See the example below:
+
+```cs
+    List<AsayerTestStatus> testStatus = new List<AsayerTestStatus>();
+    testStatus.Add(new AsayerTestStatus("TEST ID 1", "Passed"));
+    testStatus.Add(new AsayerTestStatus("TEST ID 2", "Failed"));
+    this.markSession("Passed", "requirementId1230", testStatus);
+```
+
+You can also rely on our REST API to do so by calling:
+
+```json
+Endpoint: https://dashboard.asayer.io/mark_session
+Method: POST
+Json: {
+        sessionID:this.sessionId, // Required
+        sessionStatus:"Passed"|"Failed", // Required
+        apiKey:"YOUR ASAYER API KEY (this.apikey)", // Required
+        reqID: "REQUIREMENT ID", // Required
+	    testStatus: [ // Required
+    		{
+    		    name: "TEST ID 1", 
+    		    result: "Passed"|"Failed"
+		    },
+    		{
+    		    name: "TEST ID 2", 
+    		    result: ""Passed"|"Failed"
+		    },
+    		...
+    	]
+    }
+```
+
+The state will be visible in the Dashboard and in the Reporting section as below.
+
+<p align="center">
+<img src="https://s3.eu-central-1.amazonaws.com/asayer-samples-assets/nunit/test+state+2.PNG"/>
+</p>
+
+<p align="center">
+<img src="https://s3.eu-central-1.amazonaws.com/asayer-samples-assets/nunit/reporting.PNG"/>
+</p>
+
+
 ## Dependencies
 This project relies on the below dependencies:
 - Selenium.WebDriver
 - NUnit
 - NUnit3TestAdapter
 - Blun.ConfigurationManager
+- Newtonsoft.Json
 
 To install the latest version of these dependencies, go to *Tools > NuGet Package Manager > Manage NuGet Packages For Solution...* then search/install each one of them.
 
@@ -358,6 +405,7 @@ To install the latest version of these dependencies, go to *Tools > NuGet Packag
   <package id="NUnit" version="3.7.1" targetFramework="net45" />
   <package id="NUnit3TestAdapter" version="3.8.0" targetFramework="net45" />
   <package id="Selenium.WebDriver" version="3.5.0" targetFramework="net45" />
+  <package id="Newtonsoft.Json" version="10.0.3" targetFramework="net45" />
 ```
 
 ## Important Notes

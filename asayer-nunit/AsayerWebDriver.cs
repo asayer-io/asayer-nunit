@@ -69,11 +69,7 @@ namespace asayer_nunit
 
         [TearDown]
         public void Cleanup()
-        {
-            List<AsayerTestStatus> testStatus = new List<AsayerTestStatus>();
-            testStatus.Add(new AsayerTestStatus("TEST ID 1", "Passed"));
-            testStatus.Add(new AsayerTestStatus("TEST ID 2", "Failed"));
-            this.markSession("Passed", "requirementId1230", testStatus);
+        {            
             driver.Quit();
             if (NUnit.Framework.TestContext.CurrentContext.Result.Outcome.Status == TestStatus.Passed)
             {
@@ -171,10 +167,10 @@ namespace asayer_nunit
     {
         public string name;
         public string result;
-        public AsayerTestStatus(string key, string value)
+        public AsayerTestStatus(string key, string state)
         {
             this.name = key;
-            this.result = value;
+            this.result = state;
         }
     }
 }
