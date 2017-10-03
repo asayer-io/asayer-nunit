@@ -9,6 +9,7 @@ using System.Net;
 using System.IO;
 using System.Text;
 using NUnit.Framework.Interfaces;
+using Newtonsoft.Json;
 
 namespace asayer_nunit
 {
@@ -62,7 +63,7 @@ namespace asayer_nunit
                 if (flagsList.Count > 0) { capability.SetCapability("flags", flagsList); }
             }
             var timeOut = TimeSpan.FromMinutes(1);
-
+            //return;
             this.driver = new RemoteWebDriver(new Uri(hub), capability, timeOut);
             this.sessionId = ((RemoteWebDriver)driver).SessionId.ToString();
         }
@@ -70,6 +71,10 @@ namespace asayer_nunit
         [TearDown]
         public void Cleanup()
         {
+            List<AsayerTestStatus> testStatus = new List<AsayerTestStatus>();
+            testStatus.Add(new AsayerTestStatus("TEST ID 1", "Passed"));
+            testStatus.Add(new AsayerTestStatus("TEST ID 2", "Failed"));
+            this.markTest("Passed", "requirementId1230", testStatus);
             driver.Quit();
             if (NUnit.Framework.TestContext.CurrentContext.Result.Outcome.Status == TestStatus.Passed)
             {
@@ -88,8 +93,8 @@ namespace asayer_nunit
             {
                 try
                 {
-                    string reqString = "{\"sessionID\":\"" + this.sessionId + "\", \"sessionStatus\":\"" + state + "\",\"apiKey\":\"" + this.apikey + "\"}";
-                    byte[] requestData = Encoding.UTF8.GetBytes(reqString);
+                    AsayerTestResult atr = new AsayerTestResult(this.sessionId, state, this.apikey);
+                    byte[] requestData = Encoding.UTF8.GetBytes(atr.getJsonString());
                     Uri myUri = new Uri(string.Format("https://dashboard.asayer.io/sessions/mark_test"));
                     WebRequest myWebRequest = HttpWebRequest.Create(myUri);
                     HttpWebRequest myHttpWebRequest = (HttpWebRequest)myWebRequest;
@@ -110,6 +115,81 @@ namespace asayer_nunit
             {
                 Console.WriteLine("Asayer: You have to initiate the AsayerWebDriver first in order to call markTestState.");
             }
+        }
+        public void markTest(string state, string requirementID, List<AsayerTestStatus> testStatus)
+        {
+            if (this.sessionId != null && this.sessionId.Length > 0)
+            {
+                if (requirementID != null && requirementID.Length > 0 && testStatus.Count > 0)
+                {
+                    try
+                    {
+                        AsayerTestResult atr = new AsayerTestResult(this.sessionId, state, this.apikey, requirementID, testStatus);
+                        byte[] requestData = Encoding.UTF8.GetBytes(atr.getJsonString());
+                        Uri myUri = new Uri(string.Format("https://dashboard.asayer.io/sessions/mark_test"));
+                        WebRequest myWebRequest = HttpWebRequest.Create(myUri);
+                        HttpWebRequest myHttpWebRequest = (HttpWebRequest)myWebRequest;
+                        myWebRequest.ContentType = "application/json";
+                        myWebRequest.Method = "POST";
+                        myWebRequest.ContentLength = requestData.Length;
+                        using (Stream st = myWebRequest.GetRequestStream()) st.Write(requestData, 0, requestData.Length);
+
+                        myWebRequest.GetResponse().Close();
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine("{0} Exception caught.", e);
+                        Console.WriteLine("Asayer: Something went wrong in marking the session state.");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Asayer: check the requirementID and the testStatus values.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Asayer: You have to initiate the AsayerWebDriver first in order to call markTestState.");
+            }
+        }
+
+    }
+    class AsayerTestResult
+    {
+        public string sessionID { get; set; }
+        public string sessionStatus { get; set; }//"Passed"|"Failed"
+        public string apiKey { get; set; }
+        public string reqID { get; set; }
+        public List<AsayerTestStatus> testStatus;
+        public AsayerTestResult(string sessionID, string sessionStatus, string apiKey, string requirementID, List<AsayerTestStatus> testStatus)
+        {
+            this.sessionID = sessionID;
+            this.sessionStatus = sessionStatus;
+            this.apiKey = apiKey;
+            this.reqID = requirementID;
+            this.testStatus = testStatus;
+        }
+        public AsayerTestResult(string sessionID, string sessionStatus, string apiKey)
+        {
+            this.sessionID = sessionID;
+            this.sessionStatus = sessionStatus;
+            this.apiKey = apiKey;
+        }
+
+        public string getJsonString()
+        {
+            string json = JsonConvert.SerializeObject(this, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            return json;
+        }
+    }
+    class AsayerTestStatus
+    {
+        public string name;
+        public string result;
+        public AsayerTestStatus(string key, string value)
+        {
+            this.name = key;
+            this.result = value;
         }
     }
 }
