@@ -108,7 +108,7 @@ namespace asayer_nunit
             }
             else
             {
-                Console.WriteLine("Asayer: You have to initiate the AsayerDriver first in order to call markTestState.");
+                Console.WriteLine("Asayer: You have to initiate the AsayerWebDriver first in order to call markTestState.");
             }
         }
     }
