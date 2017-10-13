@@ -405,5 +405,16 @@ To install the latest version of these dependencies, go to *Tools > NuGet Packag
   <package id="Newtonsoft.Json" version="10.0.3" targetFramework="net45" />
 ```
 
+## Troubleshooting
+* If you are having issues with the `MoveToElement` method on Firefox (`NotImplementedException: MouseMove`), this is mainly due to the current version of `Selenium.WebDriver`, to solve this issue, you can choose one of the following solutions:
+    *  Upgrade your `Selenium.WebDriver` to a newer version (`3.5.1` or newer)
+    *  Replace the `MoveToElement` method, with the code below:
+        ```cs
+            IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+            string jscode = "if(document.createEvent){var evObj = document.createEvent('MouseEvents');evObj.initEvent('mouseover', true, false); arguments[0].dispatchEvent(evObj);} else if(document.createEventObject) { arguments[0].fireEvent('onmouseover');}";
+            js.ExecuteScript(jscode, element);
+        ```
+    *  If you are running your Firefox tests on the `any` platform, then simply disable the `marionette`, this can be done in the [`App.config`](https://github.com/asayer-io/asayer-specflow/blob/master/asayer-specflow/App.config) file by adding `<add key="marionette" value="false" />` under `<capabilities><settings>`
+
 ## Important Notes
 - Do not remove the `[TearDown]` from the `AsayerWebDriver` class as it closes your session at the end of every test (otherwise it will timeout)
