@@ -30,6 +30,7 @@
    - [Limitations](#limitations)
 * [Mark Session](#mark-session)
 * [Dependencies](#dependencies)
+* [Troubleshooting](#troubleshooting)
 * [Important Notes](#important-notes)
 
 ## Prerequisites
