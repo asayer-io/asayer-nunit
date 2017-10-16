@@ -183,9 +183,9 @@ The supported browser versions are:
 
 | Name        | Version           |
 | :-------------: |:-------------:| 
-| edge | 14 |
-| opera | 47 |
-| firefox | 55 |
+| edge | 15 |
+| opera | 48 |
+| firefox | 56 |
 | chrome | 61 |
 | ie | 11 |
 | safari | 11.0 |
